@@ -1,49 +1,39 @@
-import React, { useState } from 'react'
-// import SideMenu from '../../components/SideMenu'
+import React, { useState, useContext } from 'react'
+import { AppContext } from "../../context/globalContext";
+import { useHistory } from "react-router-dom";
 import MainContent from './MainContent'
-import Subscribe from './Subscribe'
-import Profile from './Profile';
-import BookDetail from './BookDetail';
 import DashboardNavbar from './DashboardNavbar'
-
-import { Container, Row, Col, Card, Jumbotron, Button } from 'react-bootstrap';
 import DashboardHead from './DashboardHead';
+import Login from './Login'
+import Signup from './Signup'
+
+import { Container, Row, Col, Card, Jumbotron } from 'react-bootstrap';
 
 const Dashboard = () => {
-   const [home, setHome] = useState(true)
-   const [subscribe, setSubscribe] = useState(false)
-   const [profile, setProfile] = useState(false)
-   const [detailbook, setDetailbook] = useState(false)
+   const [modalLogin, setModalLogin] = useState(false)
+   const [modalRegister, setModalRegister] = useState(false)
+   const [modalDim, setModalDim] = useState(false)
 
-   const disSubscribe = () => {
-      setHome(false)
-      setSubscribe(true)
-      setProfile(false)
-      setDetailbook(false)
+   const registerDisplay = () => {
+      setModalRegister(!modalRegister)
+      setModalLogin(false)
+      setModalDim(true)
    }
-   const disProfile = () => {
-      setHome(false)
-      setSubscribe(false)
-      setProfile(true)
-      setDetailbook(false)
+   const loginDisplay = () => {
+      setModalLogin(!modalLogin)
+      setModalRegister(false)
+      setModalDim(true)
    }
-   const disHome = () => {
-      setHome(true)
-      setSubscribe(false)
-      setProfile(false)
-      setDetailbook(false)
-   }
-   const disDetailbook = () => {
-      setHome(false)
-      setSubscribe(false)
-      setProfile(false)
-      setDetailbook(true)
+   const dimDisplay = () => {
+      setModalLogin(false)
+      setModalRegister(false)
+      setModalDim(false)
    }
    
    return (
       <div className="Dashboard pt-3 pb-3">
          <Container fluid>
-            <DashboardNavbar />
+            <DashboardNavbar loginButton={loginDisplay} registerButton={registerDisplay} />
 
             <Jumbotron fluid className="bg-white">
                <div className="col-md-4 offset-md-4">
@@ -56,21 +46,22 @@ const Dashboard = () => {
             <Row className="Dashboard-row">
                <Col className="Dashboard-comp Dashboard-comp-card">
                   <Card className="Dashboard-comp-content bg-transparent border-0" body>
-                     <div style={{display: home ? 'block' : 'none'}}>
-                        <MainContent detailbook={disDetailbook} />
+                     <div>
+                        <MainContent />
                      </div>
-                     {/* <div style={{display: subscribe ? 'block' : 'none'}}>
-                        <Subscribe home={disHome} />
-                     </div>
-                     <div style={{display: profile ? 'block' : 'none'}}>
-                        <Profile />
-                     </div>
-                     <div style={{display: detailbook ? 'block' : 'none'}}>
-                        <BookDetail />
-                     </div> */}
                   </Card>
                </Col>
             </Row>
+
+         <div className="LandingPage-dim" onClick={dimDisplay} style={{display: modalDim?'block':'none'}}></div>
+
+         <div className="Login card" style={{display: modalLogin?'block':'none'}}>
+            <Login valSu={registerDisplay} rtn={dimDisplay} />
+         </div>
+         <div className="Signup card" style={{display: modalRegister?'block':'none'}}>
+            <Signup valSi={loginDisplay} rtn={dimDisplay} />
+         </div>
+
          </Container>
          
       </div>

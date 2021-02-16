@@ -8,6 +8,7 @@ const router = require("./src/routes");
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(__dirname + "/uploads"));
 app.use("/api/v1", router);
 const port = 5000;
 
