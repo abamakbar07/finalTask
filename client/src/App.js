@@ -7,7 +7,7 @@ import "./App.css";
 
 import PrivateRoute from "./components/PrivateRoute";
 import GlobalRoute from "./components/GlobalRoute";
-import LandingPage from "./pages/LandingPage/LandingPage";
+// import LandingPage from "./pages/LandingPage/LandingPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Admin from "./pages/Admin/Admin";
 
@@ -54,10 +54,10 @@ const App = () => {
           {/* {state.isLogin && state.isLogin} */}
           <Switch>
             <Route path="/" exact>
-              <LandingPage />
+              <Dashboard />
             </Route>
 
-            <PrivateRoute path="/Dashboard" exact component={Dashboard} />
+            {/* <PrivateRoute path="/Dashboard" exact component={Dashboard} /> */}
             <GlobalRoute path="/Admin" exact component={Admin} />
           </Switch>
         </div>
