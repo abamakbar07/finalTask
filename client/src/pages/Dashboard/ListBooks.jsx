@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import loadingIcon from '../../img/loading.png'
 import { Card, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { API } from '../../config/api'
 
 
-function ListBooks(props) {
+function ListBooks({getbook}) {
+   const history = useHistory();
    const [book, setBook] = useState([])
    const [loading, setLoading] = useState(true)
 
@@ -37,19 +38,19 @@ function ListBooks(props) {
          ) : (
             <div className="ListBooks">
                <Row>
-               {book.map((bookList) => (
-                  <Col>
-                     <Card className="ListBooks-card bg-transparent border-0">
-                        <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{maxWidth: "10vw", height: "30vh"}} />
-                        <Card.Body className="text-left p-0 pt-2">
-                           <Card.Title className="ListBooks-title" >{bookList.title}</Card.Title>
-                           <Card.Text className="text-muted">
-                           {bookList.author}
-                           </Card.Text>
-                        </Card.Body>
-                     </Card>
-                  </Col>
-               ))}
+                  {book.map((bookList) => (
+                        <Col onClick={() => getbook(bookList.id)}>
+                           <Card className="ListBooks-card bg-transparent border-0">
+                              <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{maxWidth: "10vw", height: "30vh"}} />
+                              <Card.Body className="text-left p-0 pt-2">
+                                 <Card.Title className="ListBooks-title" >{bookList.title}</Card.Title>
+                                 <Card.Text className="text-muted">
+                                 {bookList.author}
+                                 </Card.Text>
+                              </Card.Body>
+                           </Card>
+                        </Col>
+                  ))}
                </Row>
             </div>
             )};

@@ -4,6 +4,8 @@ import ListBooks from './ListBooks'
 
 const MainContent = (props) => {
    const detailbook = props.detailbook
+   
+   console.log(detailbook)
 
    return (
       <div className="MainContent">

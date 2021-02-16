@@ -1,24 +1,45 @@
-import React, { useState } from 'react'
-import book4 from '../../img/buku4.png'
+import React, { useState, useEffect } from 'react'
 import iconBookmark from '../../img/icon/bookmark.png'
 import { Card, ListGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { API } from '../../config/api'
 
-function BookDetail() {
+const BookDetail = (props) => {
+   const bookId = props.propsBook
    const [bookmark, setBookmark] = useState(false)
-
+   const [loading, setLoading] = useState(true)
+   const [bookResult, setBookResult] = useState([])
+   
    const getBookmark = () => {
       setBookmark(true)
+   } 
+
+   const getBook = async () => {
+      try {
+         setLoading(true);
+         const book = await API.get("/book/"+bookId);
+         setLoading(false);
+         setBookResult(book.data.data.book);
+         console.log(book.data.data.book);
+      } catch (error) {
+         console.log(error)
+      }
    }
 
-   return (
-      <div className="BookDetail">
-         <Card body className="border-0 bg-transparent">
-            <div className="row">
+   useEffect(() => {
+      getBook();
+   }, []);
 
+   return (
+      <div className="BookDetail pt-5">
+      {loading ? (
+   <h1>Loading dulu gaes</h1>
+) : ( 
+         <Card body className="border-0 pt-5 bg-transparent">
+            <div className="row">
                <div className="col-md-4">
                   <ListGroup>
-                     <img alt="" src={book4} style={{width: "100%"}} />
+                     <img alt="" src={"http://localhost:5000/books/"+bookResult.bookThumbnail} style={{width: "100%"}} />
                   </ListGroup>
                </div>
 
@@ -26,10 +47,10 @@ function BookDetail() {
                   <ListGroup horizontal>
                      <ListGroup.Item className="text-left border-0 bg-transparent">
                         <p className="BookDetail-title m-0 font-weight-bold">
-                           Tess on the Road
+                           {bookResult.title}
                         </p>
                         <small className="text-muted">
-                           Rachel Hartman
+                           {bookResult.author}
                         </small>
                      </ListGroup.Item>
                   </ListGroup>
@@ -39,7 +60,7 @@ function BookDetail() {
                            Publication date
                         </p>
                         <small className="text-muted">
-                           April 2020
+                           {bookResult.publicationDate}
                         </small>
                      </ListGroup.Item>
                   </ListGroup>
@@ -49,7 +70,7 @@ function BookDetail() {
                            Pages
                         </p>
                         <small className="text-muted">
-                           436
+                           {bookResult.pages}
                         </small>
                      </ListGroup.Item>
                   </ListGroup>
@@ -59,21 +80,28 @@ function BookDetail() {
                            ISBN
                         </p>
                         <small className="text-muted">
-                           9781789807554
+                           {bookResult.isbn}
+                        </small>
+                     </ListGroup.Item>
+                  </ListGroup>
+                  <ListGroup horizontal>
+                     <ListGroup.Item className="text-left border-0 bg-transparent">
+                        <p className="m-0 font-weight-bold text-success">
+                           Price
+                        </p>
+                        <small className="text-muted">
+                           {"Rp. "+bookResult.price}
                         </small>
                      </ListGroup.Item>
                   </ListGroup>
                </div>
-
             </div>
 
             <div className="row mt-5 mb-5">
                <div className="col-sm-12">
                   <p className="BookDetail-aboutTitle text-left">About This Book</p>
                   <p className="BookDetail-aboutSub text-left">
-                     In the medieval kingdom of Goredd, women are expected to be ladies, men are their protectors, and dragons get to be whomever they want. Tess, stubbornly, is a troublemaker. You can’t make a scene at your sister’s wedding and break a relative’s nose with one punch (no matter how pompous he is) and not suffer the consequences. As her family plans to send her to a nunnery, Tess yanks on her boots and sets out on a journey across the Southlands, alone and pretending to be a boy.
-                     Where Tess is headed is a mystery, even to her. So when she runs into an old friend, it’s a stroke of luck. This friend is a quigutl—a subspecies of dragon—who gives her both a purpose and protection on the road. But Tess is guarding a troubling secret. Her tumultuous past is a heavy burden to carry, and the memories she’s tried to forget threaten to expose her to the world in more ways than one.
-                     Returning to the fascinating world she created in the award-winning and New York Times bestselling Seraphina, Rachel Hartman introduces readers to a new character and a new quest, pushing the boundaries of genre once again in this wholly original fantasy.
+                     {bookResult.about}
                   </p>
                </div>
             </div>
@@ -89,6 +117,7 @@ function BookDetail() {
                </div>
             </div>
          </Card>
+      )}
       </div>
    )
 }
