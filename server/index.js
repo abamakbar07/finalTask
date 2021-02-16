@@ -1,11 +1,16 @@
-const express = require('express')
-const app = express()
-const port = 5000
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+require("dotenv").config();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const app = express();
+const router = require("./src/routes");
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use("/api/v1", router);
+const port = 5000;
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+  console.log(`Listening to port ${port}, App Ready !`);
+});
