@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { AppContext } from "./context/globalContext";
+
+import "./App.css";
+
+import PrivateRoute from "./components/PrivateRoute";
+import GlobalRoute from "./components/GlobalRoute";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Admin from "./pages/Admin/Admin";
+
+import { QueryClientProvider, QueryClient } from "react-query";
+
+import { API, setAuthToken } from "./config/api";
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
 }
+
+const queryClient = new QueryClient();
+
+const App = () => {
+  const [dispatch] = useContext(AppContext);
+
+  const checkUser = async () => {
+    try {
+      const response = await API.get("/check-auth");
+      console.log(response.config.headers["Authorization"]);
+      if (response.status === 401) {
+        return dispatch({
+          type: "AUTH_ERROR",
+        });
+      }
+
+      if (response.config.headers["Authorization"]) {
+        dispatch({
+          type: "USER_LOADED",
+          payload: response.data.user,
+        });
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="App">
+          {/* {state.isLogin && state.isLogin} */}
+          <Switch>
+            <Route path="/" exact>
+              <LandingPage />
+            </Route>
+
+            <PrivateRoute path="/Dashboard" exact component={Dashboard} />
+            <GlobalRoute path="/Admin" exact component={Admin} />
+          </Switch>
+        </div>
+      </Router>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

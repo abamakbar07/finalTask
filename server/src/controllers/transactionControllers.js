@@ -1,23 +1,21 @@
 const { Transactions, Users } = require("../../models");
 
 exports.addTransaction = async (req, res) => {
-  const { files } = req;
+  const { body, files } = req;
 
   try {
     const transaction = await Transactions.create({
-      users: req.body.userId,
+      ...body,
       transferProof: files.transferProof[0].filename,
-      remainingActive: 0,
-      userStatus: "Non Active",
       paymentStatus: "Pending",
     });
 
     const users = await Users.findOne({
       where: {
-        id: req.body.userId,
+        id: body.users,
       },
       attributes: {
-        exclude: ["email", "createdAt", "updatedAt", "password", "isAdmin"],
+        exclude: ["email", "createdAt", "updatedAt", "password", "isAdmin", "phone", "address", "gender", "profilImage"],
       },
     });
 
@@ -152,7 +150,7 @@ exports.getTransactions = async (req, res) => {
   try {
     const transaction = await Transactions.findAll({
       attributes: {
-        exclude: ["createdAt", "updatedAt", "userId", "UserId"],
+        exclude: ["createdAt", "updatedAt"],
       },
     });
 
@@ -173,7 +171,7 @@ exports.getTransactions = async (req, res) => {
           id: transaction[i].users,
         },
         attributes: {
-          exclude: ["email", "password", "createdAt", "updatedAt", "isAdmin"],
+          exclude: ["email", "password", "createdAt", "updatedAt", "isAdmin", "gender", "phone", "address", "profilImage"],
         },
       });
       transaction[i].users = user;
