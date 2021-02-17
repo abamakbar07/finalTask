@@ -15,7 +15,7 @@ const reducer = (state, action) => {
             localStorage.setItem("token", action.payload.token);
             return {
             ...state,
-            isLogin: true,
+            isLogin: false,
             isAdmin: true,
             user: {
                email: action.payload.email,

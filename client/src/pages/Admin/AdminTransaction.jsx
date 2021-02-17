@@ -1,10 +1,50 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
 import { API } from '../../config/api'
 
+import { Dropdown } from 'react-bootstrap'
+
 const Transaction = () => {
+   const history = useHistory()
    const [data, setData] = useState([])
    const [loading, setLoading] = useState(true)
+
+   const approveButton = async (id) => {
+      try {
+         const body = JSON.stringify({
+            paymentStatus: "Approve"
+         })
+         const config = {
+            headers: {
+               "Content-Type": "application/json",
+            },
+         };
+         await API.patch("/transaction/"+id, body, config )
+         history.push("/Admin")
+         
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+   const cancelButton = async (id) => {
+      try {
+         const body = JSON.stringify({
+            paymentStatus: "Cancel"
+         })
+         const config = {
+            headers: {
+               "Content-Type": "application/json",
+            },
+         };
+         await API.patch("/transaction/"+id, body, config )
+         history.push("/Admin")
+         
+      } catch (error) {
+         console.log(error)
+      }
+   }
 
    const getTransaction = async () => {
       try {
@@ -37,14 +77,14 @@ const Transaction = () => {
                      <thead style={{
                         display: "block",
                      }}>
-                        <tr className="tr-listTransaction text-danger">
-                           <th>No</th>
-                           <th>Users</th>
-                           <th>Bukti Transfer</th>
-                           <th>Remaining Active</th>
-                           <th>Status User</th>
-                           <th>Status Payment</th>
-                           <th>Action</th>
+                        <tr className=" text-danger">
+                           <th style={{width: "5vw"}}>No</th>
+                           <th style={{width: "15vw"}}>Users</th>
+                           <th style={{width: "10vw"}}>Bukti Transfer</th>
+                           <th style={{width: "25vw"}}>Buku</th>
+                           <th style={{width: "10vw"}}>Total Pembayaran</th>
+                           <th style={{width: "10vw"}}>Status Pembayaran</th>
+                           <th style={{width: "5vw"}}>Action</th>
                         </tr>
                      </thead>
 
@@ -59,18 +99,27 @@ const Transaction = () => {
                      }}>
 
                         {data.map((dataTrans) => (   
-                           <tr className="tr-listTransaction" key={dataTrans.id}>
-                              <td>{dataTrans.id}</td>
-                              <td>{dataTrans.users.fullname}</td>
-                              <td>{dataTrans.transferProof}</td>
-                              <td>{dataTrans.remainingActive}</td>
-                              <td className={
-                                 dataTrans.userStatus === 'Active' ? 'text-success' : 'text-danger'
-                              } >{dataTrans.userStatus}</td>
-                              <td className={
-                                 dataTrans.paymentStatus === 'Approve' ? 'text-success' : 'text-danger'
+                           <tr className="" key={dataTrans.id}>
+                              <td style={{width: "5vw"}}>{dataTrans.id}</td>
+                              <td style={{width: "15vw"}}>{dataTrans.users.fullname}</td>
+                              <td style={{width: "10vw"}}>{dataTrans.transferProof}</td>
+                              <td style={{width: "25vw"}}>{dataTrans.productPurchased}</td>
+                              <td style={{width: "10vw"}}>{"Rp."+dataTrans.paymentTotal}</td>
+                              <td style={{width: "10vw"}} className={
+                                 dataTrans.paymentStatus === 'Approve' ? 'text-success': dataTrans.paymentStatus === 'Cancel' ? 'text-danger' : 'text-warning'
                               } >{dataTrans.paymentStatus}</td>
-                              <td>V</td>
+                              <td style={{width: "5vw"}}>
+                                 <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                       
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                       <Dropdown.Item onClick={() => approveButton(dataTrans.id)}>Approve</Dropdown.Item>
+                                       <Dropdown.Item onClick={() => cancelButton(dataTrans.id)}>Cancel</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                 </Dropdown>
+                              </td>
                            </tr>
                            ))}
 

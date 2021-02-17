@@ -12,12 +12,18 @@ import { AppContext } from '../../context/globalContext'
 const AdminNavbar = (props) => {
    const addBook = props.isAddbook
 
-   const [dispatch] = useContext(AppContext);
+   const [state, dispatch] = useContext(AppContext);
 
-   const signOut = async (e) => {
-      dispatch({
-         type: "LOGOUT"
-      })
+   const buttonSignout = async (e) => {
+      e.preventDefault();
+      window.location.reload(false);
+      try {
+         dispatch({
+            type: "LOGOUT"
+         });
+      } catch (error) {
+         console.log(error)
+      }
    }
 
    return (
@@ -26,7 +32,7 @@ const AdminNavbar = (props) => {
             position: "fixed"
          }}>
             <Navbar className="justify-content-between bg-transparent pt-3">
-               <Link to="/Dashboard" >
+               <Link to="/Admin" >
                   <img alt="" src={logo} width="105px" style={{transform: "rotate(-15deg)"}} />
                </Link>
 
@@ -53,7 +59,7 @@ const AdminNavbar = (props) => {
                               <div className="">
                                  <img alt="" className="ml-3" src={iconLogout} />
                               </div>
-                              <p className="text-left m-0 p-0 text-secondary" onClick="/" >Logout</p>
+                              <p className="text-left m-0 p-0 text-secondary" onClick={(e) => buttonSignout(e)} >Logout</p>
                            </div>
                         </Link>
                      </Dropdown.Item>

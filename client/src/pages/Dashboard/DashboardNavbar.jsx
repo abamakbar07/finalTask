@@ -65,7 +65,7 @@ const DashboardNavbar = (props) => {
             position: "fixed"
          }}>
             <Navbar className="justify-content-between bg-transparent pt-3">
-               <Link to="/" >
+               <Link to={state.isAdmin ? "/Admin" : "/"} >
                   <img alt="" src={logo} width="105px" style={{transform: "rotate(-15deg)"}} />
                </Link>
 

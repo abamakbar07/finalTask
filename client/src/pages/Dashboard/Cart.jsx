@@ -14,20 +14,20 @@ const Cart = () => {
    const { carts } = state;
    let i
    let totalPrice = 0
-   let bookId = []
+   let bookTitle = []
 
    for (i = 0; i < carts.length; i++) {
       totalPrice += carts[i].price
-      bookId[i] = carts[i].id
+      bookTitle[i] = carts[i].title
    }
 
-   // const purchasedProduct = bookTitle.join(", ")
+   const purchasedProduct = bookTitle.join(", ")
 
    const [loading, setLoading] = useState(false)
    const [addTransaction, setAddTransaction] = useState({
       users: "1",
       transferProof: "",
-      productPurchased: bookId,
+      productPurchased: purchasedProduct,
       paymentTotal: totalPrice,
       paymentStatus: "Pending",
    })
@@ -71,7 +71,7 @@ const Cart = () => {
          setAddTransaction({
             users: "1",
             transferProof: "",
-            productPurchased: bookId,
+            productPurchased: purchasedProduct,
             paymentTotal: totalPrice,
             paymentStatus: "Pending",
          })

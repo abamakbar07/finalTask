@@ -14,19 +14,24 @@ import Signup from './Signup'
 import BookDetail from './BookDetail';
 
 const Dashboard = () => {
+   const history = useHistory()
    const [state] = useContext(AppContext)
    const [modalLogin, setModalLogin] = useState(false)
    const [modalRegister, setModalRegister] = useState(false)
    const [modalDim, setModalDim] = useState(false)
    const [mainContent, setMainContent] = useState(true)
    const [detailBookContent, setDetailBookContent] = useState(false)
-
    const [book, setBook] = useState()
 
+   
+   console.log(state.isAdmin)
+   
+   
    const getBook = async (id) => {
       setBook(id);
+      if (state.isAdmin) return history.push('/Admin')
    }
-
+   
    const registerDisplay = () => {
       setModalRegister(!modalRegister)
       setModalLogin(false)

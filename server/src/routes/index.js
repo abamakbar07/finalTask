@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { register, login, checkAuth } = require("../controllers/authControllers");
 const { addBook, getBooks, getBookDetail } = require("../controllers/bookControllers");
-const { addTransaction, getTransactions } = require("../controllers/transactionControllers");
+const { addTransaction, getTransactions, editTransaction } = require("../controllers/transactionControllers");
 const { loginAuth } = require("../middlewares/auth");
 const { uploadBookNew } = require("../middlewares/uploadBook");
 const { uploadTransactionProof } = require("../middlewares/uploadTransaction");
@@ -17,6 +17,8 @@ router.get("/book/:id", getBookDetail)
 router.post("/book", uploadBookNew("bookThumbnail", "bookFile"), addBook)
 
 router.get("/transactions", getTransactions)
+router.get("/transactions", getTransactions)
+router.patch("/transaction/:id", editTransaction);
 router.post("/transaction", uploadTransactionProof("transferProof"), addTransaction)
 
 module.exports = router;

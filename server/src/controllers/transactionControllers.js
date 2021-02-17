@@ -167,7 +167,7 @@ exports.getTransactions = async (req, res) => {
         attributes: {
           exclude: ["email", "password", "createdAt", "updatedAt", "isAdmin", "gender", "phone", "address", "profilImage"],
         },
-      });
+      });      
       transaction[i].users = user;
     }
 

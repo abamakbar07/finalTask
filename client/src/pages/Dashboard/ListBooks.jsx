@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import loadingIcon from '../../img/loading.png'
 import { Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom'
+
+import { AppContext } from "../../context/globalContext"
 
 import { API } from '../../config/api'
 
 
 function ListBooks({getbook}) {
    const history = useHistory();
+   const [state, dispatch] = useContext(AppContext)
    const [book, setBook] = useState([])
    const [loading, setLoading] = useState(true)
+
+   console.log(state.isAdmin)
 
    const getTransaction = async () => {
       try {
          setLoading(true);
          const books = await API.get("/books");
+         if (state.isAdmin) history.push("/Admin")
          setLoading(false);
          setBook(books.data.data.books);
-         console.log(books.data.data.books);
       } catch (error) {
          console.log(error)
       }
