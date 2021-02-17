@@ -1,37 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import iconBookmark from '../../img/icon/bookmark.png'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, ListGroup } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
+
 import { API } from '../../config/api'
+import { CartContext } from "../../context/cartContext"
+
+import DashboardNavbar from './DashboardNavbar'
+
+import iconBookmark from '../../img/icon/bookmark.png'
 
 const BookDetail = (props) => {
-   const bookId = props.propsBook
-   const [bookmark, setBookmark] = useState(false)
-   const [loading, setLoading] = useState(true)
+   const { id } = useParams()
+   const [state, dispatch] = useContext(CartContext)
+   const [loading, setLoading] = useState(false)
    const [bookResult, setBookResult] = useState([])
-   
-   const getBookmark = () => {
-      setBookmark(true)
-   } 
+   const [booksResult, setBooksResult] = useState([])
 
    const getBook = async () => {
       try {
          setLoading(true);
-         const book = await API.get("/book/"+bookId);
-         setLoading(false);
+         const book = await API.get("/book/"+id);
+         const books = await API.get("/books")
          setBookResult(book.data.data.book);
-         console.log(book.data.data.book);
+         setBooksResult(books.data.data.books);
+         
+         setLoading(false);
+
       } catch (error) {
          console.log(error)
       }
    }
+   
+   const addProductToCart = (id) => {
+      const product = booksResult.find((product) => product.id === id);
+      console.log(product)
+      dispatch({
+         type: "ADD_CART",
+         payload: product,
+      });
+   };
 
    useEffect(() => {
       getBook();
    }, []);
 
    return (
-      <div className="BookDetail pt-5">
+   <div>
+      <DashboardNavbar />
+         <div className="BookDetail pt-5">
       {loading ? (
    <h1>Loading dulu gaes</h1>
 ) : ( 
@@ -108,10 +124,11 @@ const BookDetail = (props) => {
 
             <div className="row">
                <div className="col-sm-12 text-right">
-                  <Link style={{display: bookmark ? 'none' : 'block'}} onClick={getBookmark} >
-                     <button className="btn btn-danger m-1">Add My List <img alt="" className="ml-2" src={iconBookmark} /></button>
+                  <Link >
+                     <button onClick={() => addProductToCart(bookResult.id)} className="btn btn-danger m-1">Add To Cart<img alt="" className="ml-2" src={iconBookmark} /></button>
+                     {/* <button className="btn btn-danger m-1">Add To Cart<img alt="" className="ml-2" src={iconBookmark} /></button> */}
                   </Link>
-                  <Link style={{display: bookmark ? 'block' : 'none'}}>
+                  <Link className="d-none">
                      <button className="btn btn-light m-1" style={{background: "rgba(205, 205, 205, 0.7)"}}>Read Book <div className="vRotate ml-2">V</div></button>
                   </Link>
                </div>
@@ -119,6 +136,7 @@ const BookDetail = (props) => {
          </Card>
       )}
       </div>
+   </div>
    )
 }
 

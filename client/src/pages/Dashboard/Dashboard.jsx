@@ -1,18 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { AppContext } from "../../context/globalContext";
+import { Container, Row, Col, Card, Jumbotron } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
-import MainContent from './MainContent'
+
+import { AppContext } from "../../context/globalContext"
+
+import ModalAccessBookDenied from '../../components/dashboard/modalAccessBookDenied'
 import ListBooks from './ListBooks'
 import DashboardNavbar from './DashboardNavbar'
 import DashboardHead from './DashboardHead';
 import Login from './Login'
 import Signup from './Signup'
 
-import { Container, Row, Col, Card, Jumbotron } from 'react-bootstrap';
 import BookDetail from './BookDetail';
 
 const Dashboard = () => {
-   const history = useHistory()
+   const [state] = useContext(AppContext)
    const [modalLogin, setModalLogin] = useState(false)
    const [modalRegister, setModalRegister] = useState(false)
    const [modalDim, setModalDim] = useState(false)
@@ -21,15 +23,7 @@ const Dashboard = () => {
 
    const [book, setBook] = useState()
 
-   const home = () => {
-      setMainContent(true)
-      setDetailBookContent(false)
-   }
-
    const getBook = async (id) => {
-      setMainContent(false)
-      setDetailBookContent(true)
-      console.log(id)
       setBook(id);
    }
 
@@ -49,14 +43,17 @@ const Dashboard = () => {
       setModalDim(false)
    }
 
-   // useEffect(() => {
-   //    getBook();
-   // }, []);
+   useEffect(() => {
+      getBook();
+   }, []);
    
    return (
-      <div className="Dashboard pt-3 pb-3">
-         <Container fluid>
-            <DashboardNavbar home={home} loginButton={loginDisplay} registerButton={registerDisplay} />
+      <div>
+         <DashboardNavbar loginButton={loginDisplay} registerButton={registerDisplay} />
+         
+         <div className="Dashboard pt-3 pb-3">
+         
+            <Container fluid>
 
             <Jumbotron style={{display: mainContent ? "block" : "none" }} fluid className="bg-white">
                <div className="col-md-4 offset-md-4">
@@ -101,6 +98,7 @@ const Dashboard = () => {
             </div>
          </Container>
          
+         </div>
       </div>
    )
 }

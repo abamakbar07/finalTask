@@ -7,10 +7,10 @@ import "./App.css";
 
 import PrivateRoute from "./components/PrivateRoute";
 import GlobalRoute from "./components/GlobalRoute";
-// import LandingPage from "./pages/LandingPage/LandingPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Admin from "./pages/Admin/Admin";
 import BookDetail from "./pages/Dashboard/BookDetail";
+import Cart from "./pages/Dashboard/Cart";
 
 import { QueryClientProvider, QueryClient } from "react-query";
 
@@ -59,7 +59,8 @@ const App = () => {
             </Route>
 
             {/* <PrivateRoute path="/Dashboard" exact component={Dashboard} /> */}
-            <Route path="/book/:id" exact component={BookDetail} /> 
+            <PrivateRoute path="/book/:id" exact component={BookDetail} /> 
+            <PrivateRoute path="/cart" exact component={Cart} /> 
             <GlobalRoute path="/Admin" exact component={Admin} />
           </Switch>
         </div>

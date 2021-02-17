@@ -3,12 +3,16 @@ const { Transactions, Users } = require("../../models");
 exports.addTransaction = async (req, res) => {
   const { body, files } = req;
 
+  console.log(body)
+
   try {
     const transaction = await Transactions.create({
       ...body,
       transferProof: files.transferProof[0].filename,
       paymentStatus: "Pending",
     });
+
+    console.log(transaction)
 
     const users = await Users.findOne({
       where: {
@@ -36,6 +40,7 @@ exports.addTransaction = async (req, res) => {
         transaction: transactionUpdated,
       },
     });
+
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -153,17 +158,6 @@ exports.getTransactions = async (req, res) => {
         exclude: ["createdAt", "updatedAt"],
       },
     });
-
-    // const users = await User.findOne({
-    //   where: {
-    //     id: transaction.users,
-    //   },
-    //   attributes: {
-    //     exclude: ["email", "createdAt", "updatedAt"],
-    //   },
-    // });
-
-    // await (transaction["users"] = users);
 
     for (i = 0; i < transaction.length; i++) {
       const user = await Users.findOne({

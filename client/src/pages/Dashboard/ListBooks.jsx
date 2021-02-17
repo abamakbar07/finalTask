@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import loadingIcon from '../../img/loading.png'
 import { Card, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom'
 
 import { API } from '../../config/api'
@@ -23,9 +24,9 @@ function ListBooks({getbook}) {
       }
    }
 
-  useEffect(() => {
-    getTransaction();
-  }, []);
+   useEffect(() => {
+      getTransaction();
+   }, []);
 
    return (
       <div>
@@ -39,6 +40,7 @@ function ListBooks({getbook}) {
             <div className="ListBooks">
                <Row>
                   {book.map((bookList) => (
+                     <Link to={"/book/"+bookList.id}>
                         <Col onClick={() => getbook(bookList.id)}>
                            <Card className="ListBooks-card bg-transparent border-0">
                               <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{maxWidth: "10vw", height: "30vh"}} />
@@ -50,6 +52,7 @@ function ListBooks({getbook}) {
                               </Card.Body>
                            </Card>
                         </Col>
+                     </Link>
                   ))}
                </Row>
             </div>

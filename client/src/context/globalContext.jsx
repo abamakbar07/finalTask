@@ -6,6 +6,7 @@ const initialState = {
    title: 'ubah',
    user: null,
    loading: true,
+   bookDetail: false,
 }
 
 const reducer = (state, action) => {

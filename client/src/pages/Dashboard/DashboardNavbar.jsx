@@ -10,8 +10,9 @@ import { Link } from 'react-router-dom'
 
 import { AppContext } from '../../context/globalContext'
 import { API } from '../../config/api'
+import Dashboard from './Dashboard'
 
-const AdminNavbar = (props) => {
+const DashboardNavbar = (props) => {
    const [buttonLoginRegister, setButtonLoginRegister] = useState(false);
    const [state, dispatch] = useContext(AppContext);
 
@@ -64,7 +65,7 @@ const AdminNavbar = (props) => {
             position: "fixed"
          }}>
             <Navbar className="justify-content-between bg-transparent pt-3">
-               <Link onClick={props.home} >
+               <Link to="/" >
                   <img alt="" src={logo} width="105px" style={{transform: "rotate(-15deg)"}} />
                </Link>
 
@@ -74,9 +75,13 @@ const AdminNavbar = (props) => {
                </div>
 
                <div className={buttonLoginRegister ? "d-none" : "block d-flex mr-3"}>
-                  <div className="mt-3">
-                     <img src={chart} alt=""/>
-                  </div>
+
+                  <Link to="/cart">
+                     <div className="mt-3">
+                        <img src={chart} alt=""/>
+                     </div>
+                  </Link>
+
                   <Dropdown className="ml-3 mr-3">
                      <Dropdown.Toggle className="bg-transparent border-0">
                         <Card.Img className="rounded-circle mr-3 ml-3" src={profileDefault} style={{height: "50px", width:"50px", border: "3px solid black"}} />
@@ -116,4 +121,4 @@ const AdminNavbar = (props) => {
    )
 }
 
-export default AdminNavbar
+export default DashboardNavbar
