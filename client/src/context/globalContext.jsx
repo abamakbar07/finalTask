@@ -4,7 +4,7 @@ export const AppContext = createContext();
 
 const initialState = {
    title: 'ubah',
-   user: null,
+   user: {},
    loading: true,
    bookDetail: false,
 }

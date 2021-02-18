@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { AppContext } from "../../context/globalContext";
+
 import emailIcon from '../../img/icon/email.png'
 import genderMale from '../../img/icon/genderMale.png'
 import phoneIcon from '../../img/icon/phone.png'
@@ -9,9 +11,9 @@ import { Card, ListGroup, Form, Button, Modal } from 'react-bootstrap'
 import { API } from '../../config/api'
 
 const ProfileDetail = () => {
+  const [state] = useContext(AppContext)
   const [show, setShow] = useState(false);
-  
-  const user = global.userLogin;
+
   const [editButton, setEditButton] = useState(false);
 
   const handleClose = () => {
@@ -25,12 +27,15 @@ const ProfileDetail = () => {
    }
 
    const [editProfil, setEditProfil] = useState({
-      email: user.email,
-      gender: user.gender,
-      phone: user.phone,
-      address: user.address,
-      profilImage: user.profilImage,
+      email: "state.user.email",
+      gender: "user.gender",
+      phone: "user.phone",
+      address: "user.address",
+      profilImage: "user.profilImage",
    });
+
+   console.log(state.user.email)
+   console.log(editProfil)
 
    const { email, gender, phone, address, profilImage } = editProfil;
 
@@ -84,7 +89,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {user.email}
+                        {state.user.email}
                      </p>
                      <small className="text-muted">
                         Email
@@ -97,7 +102,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {user.gender ? user.gender : "-"}
+                        {state.user.gender ? state.user.gender : "-"}
                      </p>
                      <small className="text-muted">
                         Gender
@@ -110,7 +115,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {user.phone ? user.phone : "-"}
+                        {state.user.phone ? state.user.phone : "-"}
                      </p>
                      <small className="text-muted">
                         Mobile Phone
@@ -123,7 +128,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {user.address ? user.address : "-"}
+                        {state.user.address ? state.user.address : "-"}
                         {/* Perumahan Permata Bintaro Residence C-3 */}
                      </p>
                      <small className="text-muted">
@@ -154,7 +159,7 @@ const ProfileDetail = () => {
                      </ListGroup.Item>
                      <ListGroup.Item className="text-left border-0 bg-transparent">
                         <p className="m-0 font-weight-bold">
-                           <Form.Control plaintext readOnly defaultValue={user.email} />
+                           <Form.Control plaintext readOnly defaultValue={state.user.email} />
                         </p>
                         <small className="text-muted">
                            Email

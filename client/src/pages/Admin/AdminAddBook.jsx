@@ -15,6 +15,7 @@ const AdminAddBook = (props) => {
       pages: "",
       author: "",
       isbn: "",
+      price: "",
       about: "",
       bookThumbnail: null,
       bookFile: null,
@@ -26,7 +27,7 @@ const AdminAddBook = (props) => {
       setAddBook(updateAddBook)
    };
 
-   const { title, publicationDate, pages, author, isbn, about, bookThumbnail, bookFile } = addBook
+   const { title, publicationDate, pages, author, isbn, price, about, bookThumbnail, bookFile } = addBook
 
    const onSubmit = async (e) => {
       e.preventDefault();
@@ -38,6 +39,7 @@ const AdminAddBook = (props) => {
          form.append("pages", pages);
          form.append("author", author);
          form.append("isbn", isbn);
+         form.append("price", price);
          form.append("about", about);
          form.append("bookThumbnail", bookThumbnail);
          form.append("bookFile", bookFile);
@@ -62,6 +64,7 @@ const AdminAddBook = (props) => {
             pages: "",
             author: "",
             isbn: "",
+            price: "",
             about: "",
             bookThumbnail: null,
             bookFile: null,
@@ -88,6 +91,8 @@ const AdminAddBook = (props) => {
                      <Form.Control onChange={(e) => onChange(e)} name="author" className="bgTextboxSubs" size="lg" type="text" placeholder="Author" />
                      <br />
                      <Form.Control onChange={(e) => onChange(e)} name="isbn" className="bgTextboxSubs" size="lg" type="text" placeholder="ISBN" />
+                     <br />
+                     <Form.Control onChange={(e) => onChange(e)} name="price" className="bgTextboxSubs" size="lg" type="text" placeholder="Price" />
                      <br />
                      <Form.Control onChange={(e) => onChange(e)} name="about" className="bgTextboxSubs Admin-AddBook-about" size="lg" type="text" placeholder="About This Book" />
                      <br />

@@ -93,7 +93,7 @@ const DashboardNavbar = (props) => {
                               <div className="">
                                  <img alt="" className="ml-3 invert" width="25px" src={iconBook} />
                               </div>
-                              <p className="text-left m-0 p-0 text-secondary" onClick="/" >Profile</p>
+                              <p className="text-left m-0 p-0 text-secondary" onClick={props.profile} >{props.togle ? "Dashboard" : "Profile"}</p>
                            </div>
                         </Dropdown.Item>
 

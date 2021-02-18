@@ -6,7 +6,7 @@ import { AppContext } from "./context/globalContext";
 import "./App.css";
 
 import PrivateRoute from "./components/PrivateRoute";
-import GlobalRoute from "./components/GlobalRoute";
+import GlobalRoute from "./components/globalRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Admin from "./pages/Admin/Admin";
 import BookDetail from "./pages/Dashboard/BookDetail";

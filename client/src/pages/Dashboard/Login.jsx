@@ -41,15 +41,19 @@ const Login = (props) => {
       };
 
       const user = await API.post("/login", body, config);
-
+      
       dispatch({
         type: user.data.data.user.isAdmin ? "LOGIN_SUCCESS_ADMIN" : "LOGIN_SUCCESS_USER",
         payload: user.data.data.user,
       });
-
+      
       setAuthToken(user.data.data.user.token);
 
-      global.userLogin = user.data.data.user
+      const userLogin = await API.get("/user/"+user.data.data.user.id);
+      
+      state.user = userLogin.data.data.user
+
+      console.log(state.user)
 
     } catch (error) {
         console.log(error)

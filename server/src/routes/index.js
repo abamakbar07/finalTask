@@ -4,6 +4,7 @@ const router = express.Router();
 const { register, login, checkAuth } = require("../controllers/authControllers");
 const { addBook, getBooks, getBookDetail } = require("../controllers/bookControllers");
 const { addTransaction, getTransactions, editTransaction } = require("../controllers/transactionControllers");
+const { getUser, editUser } = require("../controllers/userControllers");
 const { loginAuth } = require("../middlewares/auth");
 const { uploadBookNew } = require("../middlewares/uploadBook");
 const { uploadTransactionProof } = require("../middlewares/uploadTransaction");
@@ -11,6 +12,9 @@ const { uploadTransactionProof } = require("../middlewares/uploadTransaction");
 router.post("/register", register)
 router.post("/login", login)
 router.get("/check-auth", loginAuth, checkAuth);
+
+router.get("/user/:id", getUser)
+router.post("/user/edit", editUser)
 
 router.get("/books", getBooks)
 router.get("/book/:id", getBookDetail)

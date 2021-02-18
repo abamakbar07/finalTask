@@ -12,24 +12,28 @@ import Login from './Login'
 import Signup from './Signup'
 
 import BookDetail from './BookDetail';
+import Profile from './Profile';
 
 const Dashboard = () => {
    const history = useHistory()
    const [state] = useContext(AppContext)
    const [modalLogin, setModalLogin] = useState(false)
+   const [dashboard, setDashboard] = useState(true)
+   const [profile, setProfile] = useState(false)
    const [modalRegister, setModalRegister] = useState(false)
    const [modalDim, setModalDim] = useState(false)
    const [mainContent, setMainContent] = useState(true)
    const [detailBookContent, setDetailBookContent] = useState(false)
    const [book, setBook] = useState()
-
-   
-   console.log(state.isAdmin)
-   
    
    const getBook = async (id) => {
       setBook(id);
       if (state.isAdmin) return history.push('/Admin')
+   }
+
+   const disProfile = () => {
+      setDashboard(!dashboard)
+      setProfile(!profile)
    }
    
    const registerDisplay = () => {
@@ -54,9 +58,9 @@ const Dashboard = () => {
    
    return (
       <div>
-         <DashboardNavbar loginButton={loginDisplay} registerButton={registerDisplay} />
+         <DashboardNavbar profile={disProfile} togle={profile} loginButton={loginDisplay} registerButton={registerDisplay} />
          
-         <div className="Dashboard pt-3 pb-3">
+         <div className={dashboard ? "Dashboard pt-3 pb-3" : "Dashboard pt-3 pb-3 d-none"}>
          
             <Container fluid>
 
@@ -104,6 +108,11 @@ const Dashboard = () => {
          </Container>
          
          </div>
+
+         <div className={profile ? "d-block" : "d-none"}>
+            <Profile />
+         </div>
+
       </div>
    )
 }
