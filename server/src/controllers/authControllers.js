@@ -53,6 +53,8 @@ exports.register = async (req, res) => {
       privateKey
     );
 
+    console.log("Backend: Register success")
+
     res.send({
       status: "success",
       message: "You succesfully registered",

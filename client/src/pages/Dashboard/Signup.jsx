@@ -7,7 +7,7 @@ import { API, setAuthToken } from '../../config/api'
 
 const Signup = (props) => {
   const history = useHistory();
-  const [state] = useContext(AppContext);
+  const [state, dispatch] = useContext(AppContext);
 
   useEffect(() => {
     if (!state.loading && state.isLogin) history.push("/");
@@ -43,12 +43,20 @@ const Signup = (props) => {
 
       const user = await API.post("/register", body, config);
 
+      dispatch({
+        type: "REGISTER_SUCCESS",
+      });
+
+      console.log("Frntend: Register success")
+
       setAuthToken(user.data.data.user.token);
-
-      history.push("/");
-
-    } catch (error) {
       
+      history.push("/");
+      
+    } catch (error) {
+      dispatch({
+        type: "REGISTER_FAILED",
+      });
     }
   };
 
@@ -67,9 +75,11 @@ const Signup = (props) => {
 
               <Form.Control className="bgTextbox mt-3 mb-3" name="fullname" type="fullname" placeholder="Full Name" onChange={(e) => onChange(e)} />
 
+              <div className="btn" onClick={props.statusSignup}>
                 <Button className="mt-2 submit-button" variant="danger" type="submit" onClick={props.rtn}>
                   Sign Up
                 </Button>
+              </div>
             </Form.Group>
 
             <Form.Text className="text-muted">

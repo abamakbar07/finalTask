@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Container, Row, Col, Card, Jumbotron } from 'react-bootstrap';
+import { Container, Row, Col, Card, Jumbotron, Modal, Button } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/globalContext"
@@ -18,17 +18,34 @@ const Dashboard = () => {
    const history = useHistory()
    const [state] = useContext(AppContext)
    const [modalLogin, setModalLogin] = useState(false)
+   const [modalRegister, setModalRegister] = useState(false)
    const [dashboard, setDashboard] = useState(true)
    const [profile, setProfile] = useState(false)
-   const [modalRegister, setModalRegister] = useState(false)
    const [modalDim, setModalDim] = useState(false)
    const [mainContent, setMainContent] = useState(true)
    const [detailBookContent, setDetailBookContent] = useState(false)
    const [book, setBook] = useState()
+   const [loginModal, setLoginModal] = useState(false);
+   const [registerModal, setRegisterModal] = useState(false);
+
+   const handleClose = () => {
+      setLoginModal(false);
+      setRegisterModal(false);
+   }
+   
+   const handleShow = () => setLoginModal(true);
    
    const getBook = async (id) => {
       setBook(id);
       if (state.isAdmin) return history.push('/Admin')
+   }
+
+   const loginModalDisplay = () => {
+      setLoginModal(true)
+   }
+
+   const registerModalDisplay = () => {
+      setRegisterModal(true)
    }
 
    const disProfile = () => {
@@ -96,10 +113,10 @@ const Dashboard = () => {
             <div className="LandingPage-dim" onClick={dimDisplay} style={{display: modalDim?'block':'none'}}></div>
 
             <div className="Login card" style={{display: modalLogin?'block':'none'}}>
-               <Login valSu={registerDisplay} rtn={dimDisplay} />
+               <Login statusLogin={loginModalDisplay} valSu={registerDisplay} rtn={dimDisplay} />
             </div>
             <div className="Signup card" style={{display: modalRegister?'block':'none'}}>
-               <Signup valSi={loginDisplay} rtn={dimDisplay} />
+               <Signup statusSignup={registerModalDisplay} valSi={loginDisplay} rtn={dimDisplay} />
             </div>
 
             <div style={{display: detailBookContent ? "block" : "none" }}>
@@ -110,8 +127,26 @@ const Dashboard = () => {
          </div>
 
          <div className={profile ? "d-block" : "d-none"}>
-            <Profile />
+            {profile ? <Profile /> : ""}
          </div>
+
+         <Modal show={loginModal} onHide={handleClose}>
+            <Modal.Body className={state.isLogin ? "text-success" : "text-danger"}>{state.isLogin ? "Login succesfully!" : "Login Failed"}</Modal.Body>
+            <Modal.Footer>
+               <Button variant="primary" onClick={handleClose}>
+                  Ok
+               </Button>
+            </Modal.Footer>
+         </Modal>
+
+         <Modal show={registerModal} onHide={handleClose}>
+            <Modal.Body className={state.registerStatus ? "text-success" : "text-danger"}>{state.registerStatus ? "Your email succesfully registered! Login now!" : "Register Failed"}</Modal.Body>
+            <Modal.Footer>
+               <Button variant="primary" onClick={handleClose}>
+                  Ok
+               </Button>
+            </Modal.Footer>
+         </Modal>
 
       </div>
    )

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { AppContext } from "../../context/globalContext";
 
 import emailIcon from '../../img/icon/email.png'
@@ -11,34 +11,30 @@ import { Card, ListGroup, Form, Button, Modal } from 'react-bootstrap'
 import { API } from '../../config/api'
 
 const ProfileDetail = () => {
-  const [state] = useContext(AppContext)
-  const [show, setShow] = useState(false);
+   const [state] = useContext(AppContext)
+   const [show, setShow] = useState(false);
 
-  const [editButton, setEditButton] = useState(false);
+   const [editButton, setEditButton] = useState(false);
+   const [loading, setLoading] = useState(true)
 
-  const handleClose = () => {
-     setShow(false);
-     setEditButton(false);
-  }
-  const handleShow = () => setShow(true);
+   const handleClose = () => {
+      setShow(false);
+      setEditButton(false);
+   }
 
    const onEdit = (e) => {
       setEditButton(!editButton);
    }
 
-   const [editProfil, setEditProfil] = useState({
-      email: "state.user.email",
-      gender: "user.gender",
-      phone: "user.phone",
-      address: "user.address",
-      profilImage: "user.profilImage",
-   });
+   const [editProfil, setEditProfil] = useState();
 
-   console.log(state.user.email)
-   console.log(editProfil)
-
-   const { email, gender, phone, address, profilImage } = editProfil;
-
+   const user = async () => {
+      setLoading(true)
+      const result = await API.get("/user/"+localStorage.id)
+      setEditProfil(result.data.data.user)
+      setLoading(false)
+   }
+   
    const onChange = (e) => {
       setEditProfil({ ...editProfil, [e.target.name]: e.target.value })
    };
@@ -47,36 +43,23 @@ const ProfileDetail = () => {
       setShow(true);
       e.preventDefault();
 
-   // console.log(editProfil)
-
       try {
-         // const body = JSON.stringify({
-         //    email,
-         //    gender,
-         //    phone,
-         //    address,
-         //    profilImage,
-         // })
-
-         // console.log(body)
-
          const config = {
             header: {
                "Content-Type": "application/json",
             },
          };
 
-         const user = await API.post("/user/edit", editProfil, config);
-
-         console.log(user.data.data.user)
-
-         global.userLogin = user.data.data.user
+         await API.post("/user/edit", editProfil, config);
          
       } catch (error) {
          
       }
    }
 
+   useEffect(() => {
+      user()
+   }, [])
 
    return (
       <div className="ProfileDetail col-sm-12">
@@ -89,7 +72,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {state.user.email}
+                        {loading ? "Wait..." : editProfil.email}
                      </p>
                      <small className="text-muted">
                         Email
@@ -102,7 +85,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {state.user.gender ? state.user.gender : "-"}
+                        {loading ? "Wait..." : editProfil.gender}
                      </p>
                      <small className="text-muted">
                         Gender
@@ -115,7 +98,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {state.user.phone ? state.user.phone : "-"}
+                        {loading ? "Wait..." : editProfil.phone}
                      </p>
                      <small className="text-muted">
                         Mobile Phone
@@ -128,8 +111,7 @@ const ProfileDetail = () => {
                   </ListGroup.Item>
                   <ListGroup.Item className="text-left border-0 bg-transparent">
                      <p className="m-0 font-weight-bold">
-                        {state.user.address ? state.user.address : "-"}
-                        {/* Perumahan Permata Bintaro Residence C-3 */}
+                        {loading ? "Wait..." : editProfil.address}
                      </p>
                      <small className="text-muted">
                         Address
@@ -159,7 +141,7 @@ const ProfileDetail = () => {
                      </ListGroup.Item>
                      <ListGroup.Item className="text-left border-0 bg-transparent">
                         <p className="m-0 font-weight-bold">
-                           <Form.Control plaintext readOnly defaultValue={state.user.email} />
+                           <Form.Control plainText readOnly placeholder={loading ? "Wait..." : editProfil.email ? editProfil.email : "Enter Phone Number"} />
                         </p>
                         <small className="text-muted">
                            Email
@@ -200,7 +182,7 @@ const ProfileDetail = () => {
                      </ListGroup.Item>
                      <ListGroup.Item className="text-left border-0 bg-transparent">
                         <p className="m-0 font-weight-bold">
-                           <Form.Control className="bgTextbox mb-3" name="phone" type="text" placeholder="Enter Phone Number" onChange={(e) => onChange(e)} />
+                           <Form.Control className="bgTextbox mb-3" name="phone" type="text" placeholder={loading ? "Wait..." : editProfil.phone ? editProfil.phone : "Enter Phone Number"} onChange={(e) => onChange(e)} />
                         </p>
                         <small className="text-muted">
                            Mobile Phone
@@ -213,7 +195,7 @@ const ProfileDetail = () => {
                      </ListGroup.Item>
                      <ListGroup.Item className="text-left border-0 bg-transparent">
                         <p className="m-0 font-weight-bold">
-                           <Form.Control className="bgTextbox mb-3" name="address" type="text" placeholder="Enter Address" onChange={(e) => onChange(e)} />
+                           <Form.Control className="bgTextbox mb-3" name="address" type="text" placeholder={loading ? "Wait..." : editProfil.address ? editProfil.address : "Enter Address"} onChange={(e) => onChange(e)} />
                         </p>
                         <small className="text-muted">
                            Address

@@ -51,9 +51,7 @@ const Login = (props) => {
 
       const userLogin = await API.get("/user/"+user.data.data.user.id);
       
-      state.user = userLogin.data.data.user
-
-      console.log(state.user)
+      localStorage.setItem("id", userLogin.data.data.user.id)
 
     } catch (error) {
         console.log(error)
@@ -73,9 +71,11 @@ const Login = (props) => {
 
               <Form.Control className="bgTextbox mb-3" name="password" type="password" placeholder="Password" onChange={(e) => onChange(e)} />
 
-                <Button onClick={props.rtn} className="mt-2 submit-button" variant="danger" type="submit">
-                  Sign In
-                </Button>
+                <div className="btn" onClick={props.statusLogin}>
+                  <Button onClick={props.rtn} className="mt-2 submit-button" variant="danger" type="submit">
+                    Sign In
+                  </Button>
+                </div>
             </Form.Group>
 
             <Form.Text className="text-muted">

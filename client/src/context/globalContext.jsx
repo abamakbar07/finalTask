@@ -4,7 +4,7 @@ export const AppContext = createContext();
 
 const initialState = {
    title: 'ubah',
-   user: {},
+   user: null,
    loading: true,
    bookDetail: false,
 }
@@ -13,6 +13,7 @@ const reducer = (state, action) => {
    switch (action.type) {
          case "LOGIN_SUCCESS_ADMIN":
             localStorage.setItem("token", action.payload.token);
+            localStorage.setItem("id", action.payload.id);
             return {
             ...state,
             isLogin: false,
@@ -25,6 +26,7 @@ const reducer = (state, action) => {
             };
          case "LOGIN_SUCCESS_USER":
             localStorage.setItem("token", action.payload.token);
+            localStorage.setItem("id", action.payload.id);
             return {
             ...state,
             isLogin: true,
@@ -43,8 +45,19 @@ const reducer = (state, action) => {
             loading: false,
             };
          case "AUTH_ERROR":
+         case "REGISTER_SUCCESS":
+            return {
+            ...state,
+            registerStatus: true,
+            }
+         case "REGISTER_FAILED":
+            return {
+            ...state,
+            registerStatus: false,
+            }
          case "LOGOUT":
             localStorage.removeItem("token");
+            localStorage.removeItem("id");
             return {
                ...state,
                isLogin: false,
