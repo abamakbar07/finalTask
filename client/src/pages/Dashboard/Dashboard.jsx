@@ -3,8 +3,8 @@ import { Container, Row, Col, Card, Jumbotron, Modal, Button } from 'react-boots
 import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/globalContext"
+import { TransactionContext } from "../../context/transactionContext"
 
-import ModalAccessBookDenied from '../../components/dashboard/modalAccessBookDenied'
 import ListBooks from './ListBooks'
 import DashboardNavbar from './DashboardNavbar'
 import DashboardHead from './DashboardHead';
@@ -17,6 +17,7 @@ import Profile from './Profile';
 const Dashboard = () => {
    const history = useHistory()
    const [state] = useContext(AppContext)
+   const [stateTransaction] = useContext(TransactionContext)
    const [modalLogin, setModalLogin] = useState(false)
    const [modalRegister, setModalRegister] = useState(false)
    const [dashboard, setDashboard] = useState(true)
@@ -27,6 +28,8 @@ const Dashboard = () => {
    const [book, setBook] = useState()
    const [loginModal, setLoginModal] = useState(false);
    const [registerModal, setRegisterModal] = useState(false);
+
+   console.log(stateTransaction)
 
    const handleClose = () => {
       setLoginModal(false);

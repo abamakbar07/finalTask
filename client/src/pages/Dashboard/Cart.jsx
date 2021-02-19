@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { Card, Col, Row, Form, Button } from 'react-bootstrap'
-// import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { CartContext } from "../../context/cartContext"
+import { TransactionContext } from "../../context/transactionContext"
 import { API } from '../../config/api'
 
 import iconTransaction from '../../img/uploadTransaction.png'
@@ -10,8 +11,15 @@ import iconTransaction from '../../img/uploadTransaction.png'
 import DashboardNavbar from './DashboardNavbar'
 
 const Cart = () => {
+   const history = useHistory()
    const [state, dispatch] = useContext(CartContext);
+   const [dispatchTransaction] = useContext(TransactionContext);
    const { carts } = state;
+
+   const [preview, setPreview] = useState(false)
+   const [previewImage, setPreviewImage] = useState({
+      file : null,
+   })
 
    // console.log(carts)
    let i
@@ -27,7 +35,7 @@ const Cart = () => {
 
    const [loading, setLoading] = useState(false)
    const [addTransaction, setAddTransaction] = useState({
-      users: "1",
+      users: localStorage.id,
       transferProof: "",
       productPurchased: purchasedProduct,
       paymentTotal: totalPrice,
@@ -41,6 +49,10 @@ const Cart = () => {
       const updateTransaction = { ...addTransaction };
       updateTransaction[e.target.name] = e.target.type === "file" ? e.target.files[0] : e.target.value;
       setAddTransaction(updateTransaction)
+      setPreviewImage({
+         file: URL.createObjectURL(e.target.files[0])
+      })
+      setPreview(true)
    };
 
    const onSubmit = async (e) => {
@@ -71,12 +83,18 @@ const Cart = () => {
          console.log(transaction.data.data.transaction)
 
          setAddTransaction({
-            users: "1",
+            users: "",
             transferProof: "",
             productPurchased: purchasedProduct,
             paymentTotal: totalPrice,
             paymentStatus: "Pending",
          })
+
+         dispatchTransaction({
+            type: "TRANSACTION_SUCCESS",
+         });
+
+         history.push("/")
          
       } catch (error) {
          console.log(error)
@@ -187,22 +205,18 @@ const Cart = () => {
                                  <Form.Group>
                                     <div className="">
                                        <label for="transferProof" className="">
+                                          <h5>Upload bukti transfer</h5>
                                           <div className="">
-                                             <div className="">
-                                                <img alt="" src={iconTransaction} style={{width: "20vw"}} />
-                                             </div>
-                                             <p className="" style={{
-                                                   position: "absolute",
-                                                   top: "50%",
-                                                   left: "50%",
-                                                   transform: "translate(-50%, -50%)",
-                                             }}>
-                                                Attache book file
-                                             </p>
+                                             <img className={preview ? "d-none" : ""} alt="" src={iconTransaction} style={{width: "20vw"}} />
+                                             <img className={preview ? "" : "d-none"} style={{
+                                                   height: "25vh",
+                                                   paddingBottom: "10px",
+                                                   filter: "brightness(75%)"
+                                             }} src={previewImage.file} />
                                           </div>
                                        </label>
                                        {/* <input onChange={(e) => onChange(e)} name="bookFile" id="bookFile" type="file" style={{display:"none"}} /> */}
-                                       <input onChange={(e) => onChange(e)} name="transferProof" id="transferProof" type="file" style={{display:"none"}} />
+                                       <input onChange={(e) => onChange(e)} name="transferProof" id="transferProof" type="file" style={{display: "none"}} />
                                     </div>
 
                                     {/* <Form.Control className="d-none" name="paymentTotal" type="text" value={totalPrice} /> */}
