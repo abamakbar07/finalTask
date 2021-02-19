@@ -15,7 +15,7 @@ function ListBooks({getbook}) {
    const [book, setBook] = useState([])
    const [loading, setLoading] = useState(true)
 
-   console.log(state.isAdmin)
+   // console.log(state.isAdmin)
 
    const getTransaction = async () => {
       try {

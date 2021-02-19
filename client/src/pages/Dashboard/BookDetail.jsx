@@ -12,9 +12,22 @@ import iconBookmark from '../../img/icon/bookmark.png'
 const BookDetail = (props) => {
    const { id } = useParams()
    const [state, dispatch] = useContext(CartContext)
+   const { carts } = state;
    const [loading, setLoading] = useState(false)
    const [bookResult, setBookResult] = useState([])
    const [booksResult, setBooksResult] = useState([])
+   const [addCart, setAddCart] = useState(true)
+
+   const getAddCart = () => {
+      setLoading(false)
+      let i
+      for (i=0; i < carts.length; i++) {
+         if (carts[i].id == id) setAddCart(false)
+      }
+      setLoading(true)
+   }
+
+   // console.log(addCart)
 
    const getBook = async () => {
       try {
@@ -31,17 +44,23 @@ const BookDetail = (props) => {
       }
    }
    
-   const addProductToCart = (id) => {
-      const product = booksResult.find((product) => product.id === id);
-      console.log(product)
-      dispatch({
-         type: "ADD_CART",
-         payload: product,
-      });
+   const addProductToCart = async (id) => {
+      try {
+         setLoading(true)
+         const product = booksResult.find((product) => product.id === id);
+         dispatch({
+            type: "ADD_CART",
+            payload: product,
+         });
+         setLoading(false)
+      } catch (error) {
+         console.log("error add product to cart")   
+      }
    };
 
    useEffect(() => {
       getBook();
+      getAddCart();
    }, []);
 
    return (
@@ -122,14 +141,14 @@ const BookDetail = (props) => {
                </div>
             </div>
 
-            <div className="row">
+            <div className={loading ? "d-false" : "row"}>
                <div className="col-sm-12 text-right">
-                  <Link >
+                  <Link to="/cart" className={addCart ? "" : "d-none"}>
                      <button onClick={() => addProductToCart(bookResult.id)} className="btn btn-danger m-1">Add To Cart<img alt="" className="ml-2" src={iconBookmark} /></button>
                      {/* <button className="btn btn-danger m-1">Add To Cart<img alt="" className="ml-2" src={iconBookmark} /></button> */}
                   </Link>
-                  <Link className="d-none">
-                     <button className="btn btn-light m-1" style={{background: "rgba(205, 205, 205, 0.7)"}}>Read Book <div className="vRotate ml-2">V</div></button>
+                  <Link className={addCart ? "d-none" : ""}>
+                     <button className="btn btn-light m-1" style={{background: "rgba(205, 205, 205, 0.7)"}}>Book Added</button>
                   </Link>
                </div>
             </div>

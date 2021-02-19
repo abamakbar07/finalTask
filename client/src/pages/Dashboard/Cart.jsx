@@ -12,6 +12,8 @@ import DashboardNavbar from './DashboardNavbar'
 const Cart = () => {
    const [state, dispatch] = useContext(CartContext);
    const { carts } = state;
+
+   // console.log(carts)
    let i
    let totalPrice = 0
    let bookTitle = []
