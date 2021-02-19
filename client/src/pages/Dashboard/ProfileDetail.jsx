@@ -17,16 +17,28 @@ const ProfileDetail = () => {
    const [editButton, setEditButton] = useState(false);
    const [loading, setLoading] = useState(true)
 
+   const [preview, setPreview] = useState(true)
+   const [previewImage, setPreviewImage] = useState({
+      file : null,
+   })
+
    const handleClose = () => {
       setShow(false);
       setEditButton(false);
    }
 
    const onEdit = (e) => {
+      setPreview(!preview)
       setEditButton(!editButton);
    }
 
-   const [editProfil, setEditProfil] = useState();
+   const [editProfil, setEditProfil] = useState({
+      email: "",
+      gender: "",
+      phone: "",
+      address: "",
+      profilImage: "",
+   });
 
    const user = async () => {
       setLoading(true)
@@ -34,26 +46,47 @@ const ProfileDetail = () => {
       setEditProfil(result.data.data.user)
       setLoading(false)
    }
+
+   const onChangeImage = (e) => {
+      setEditProfil({ ...editProfil, [e.target.name]: e.target.files[0] })      
+      setPreviewImage({
+         file: URL.createObjectURL(e.target.files[0])
+      })
+      setPreview(true)
+      console.log(editProfil)
+   }
    
    const onChange = (e) => {
       setEditProfil({ ...editProfil, [e.target.name]: e.target.value })
    };
+
+   const { email, gender, phone, address, profilImage } = editProfil
 
    const onSubmit = async (e) => {
       setShow(true);
       e.preventDefault();
 
       try {
+         const form = new FormData();
+
+         form.append("email", email);
+         form.append("gender", gender);
+         form.append("phone", phone);
+         form.append("address", address);
+         form.append("profilImage", profilImage);
+
          const config = {
             header: {
                "Content-Type": "application/json",
             },
          };
 
-         await API.post("/user/edit", editProfil, config);
+         const updateProfile = await API.post("/user/edit", form, config);
+
+         console.log(updateProfile)
          
       } catch (error) {
-         
+         console.log(error)
       }
    }
 
@@ -121,7 +154,7 @@ const ProfileDetail = () => {
             </div>
             <div className="col-md-4">
                <ListGroup>
-                  <img src={profileDefault} style={{width: "100%"}} alt="" />
+                  <img src={loading ? "Wait..." : editProfil.profilImage === null ? profileDefault : "http://localhost:5000/profiles/"+editProfil.profilImage } style={{width: "100%"}} alt="" />
                </ListGroup>
                <ListGroup className="mt-2">
                   <div className="btn btn-danger" onClick={(e) => onEdit(e)}>Edit Profile</div>
@@ -205,7 +238,27 @@ const ProfileDetail = () => {
                </div>
                <div className="col-md-4">
                   <ListGroup>
-                     <img src={profileDefault} style={{width: "100%"}} alt="" />
+                     <Form.Group>
+                        <div>
+                           <label for="profilImage">
+                              <img  className={preview ? "d-none" : ""}
+                                    src={profileDefault}
+                                    style={{
+                                       width: "100%",
+                                       filter: "brightness(75%)"
+                                       }}
+                                    />
+                              <img  className={preview ? "" : "d-none"}
+                                    src={previewImage.file}
+                                    style={{
+                                       width: "100%",
+                                       filter: "brightness(75%)"
+                                       }}
+                                    />
+                           </label>
+                           <input onChange={(e) => onChangeImage(e)} name="profilImage" id="profilImage" type="file" style={{display: "none"}} />
+                        </div>
+                     </Form.Group>
                   </ListGroup>
                   <ListGroup className="mt-2">
                      <Button className="btn btn-danger" type="submit" onClick={(e) => onSubmit(e)}>Save</Button>

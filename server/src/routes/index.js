@@ -7,6 +7,7 @@ const { addTransaction, getTransactions, editTransaction } = require("../control
 const { getUser, editUser } = require("../controllers/userControllers");
 const { loginAuth } = require("../middlewares/auth");
 const { uploadBookNew } = require("../middlewares/uploadBook");
+const { uploadProfileImage } = require("../middlewares/uploadProfile");
 const { uploadTransactionProof } = require("../middlewares/uploadTransaction");
 
 router.post("/register", register)
@@ -14,7 +15,7 @@ router.post("/login", login)
 router.get("/check-auth", loginAuth, checkAuth);
 
 router.get("/user/:id", getUser)
-router.post("/user/edit", editUser)
+router.post("/user/edit", uploadProfileImage("profilImage"), editUser)
 
 router.get("/books", getBooks)
 router.get("/book/:id", getBookDetail)

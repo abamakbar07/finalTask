@@ -66,11 +66,11 @@ const BookDetail = (props) => {
    return (
    <div>
       <DashboardNavbar />
-         <div className="BookDetail pt-5">
+         <div className="BookDetail container" style={{paddingTop: "10vh"}}>
       {loading ? (
    <h1>Loading dulu gaes</h1>
 ) : ( 
-         <Card body className="border-0 pt-5 bg-transparent">
+         <Card body className="border-0 bg-transparent" style={{zIndex: "1"}}>
             <div className="row">
                <div className="col-md-4">
                   <ListGroup>

@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 
 import { AppContext } from '../../context/globalContext'
 import { API } from '../../config/api'
-import Dashboard from './Dashboard'
 
 const DashboardNavbar = (props) => {
    const [buttonLoginRegister, setButtonLoginRegister] = useState(false);
@@ -60,12 +59,13 @@ const DashboardNavbar = (props) => {
    }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
    
    return (
-      <div className="AdminNavbar">
+      <div className="AdminNavbar pb-5">
          <div className="container-fluid" style={{
-            position: "fixed"
+            position: "fixed",
+            zIndex: "1000"
          }}>
             <Navbar className="justify-content-between bg-transparent pt-3">
-               <Link to={state.isAdmin ? "/Admin" : "/"} >
+               <Link to={state.isAdmin ? "/Admin" : "/"} onClick={props.togle ? props.profile : ""} >
                   <img alt="" src={logo} width="105px" style={{transform: "rotate(-15deg)"}} />
                </Link>
 
@@ -89,11 +89,11 @@ const DashboardNavbar = (props) => {
 
                      <Dropdown.Menu>
                         <Dropdown.Item className="p-0">
-                           <div className="row container text-right">
+                           <div className="row container text-right" onClick={props.profile}>
                               <div className="">
                                  <img alt="" className="ml-3 invert" width="25px" src={iconBook} />
                               </div>
-                              <p className="text-left m-0 p-0 text-secondary" onClick={props.profile} >{props.togle ? "Dashboard" : "Profile"}</p>
+                              <p className="text-left m-0 p-0 text-secondary">{props.togle ? "Dashboard" : "Profile"}</p>
                            </div>
                         </Dropdown.Item>
 
@@ -101,11 +101,11 @@ const DashboardNavbar = (props) => {
 
                         <Dropdown.Item className="p-0">
                            <Link to="/#" >
-                              <div className="row container text-right">
+                              <div className="row container text-right" onClick={(e) => buttonSignout(e)}>
                                  <div className="">
                                     <img alt="" className="ml-3" src={iconLogout} />
                                  </div>
-                                 <p className="text-left m-0 p-0 text-secondary" onClick={(e) => buttonSignout(e)} >Logout</p>
+                                 <p className="text-left m-0 p-0 text-secondary">Logout</p>
                               </div>
                            </Link>
                         </Dropdown.Item>

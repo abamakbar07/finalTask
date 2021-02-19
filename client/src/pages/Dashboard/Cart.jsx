@@ -3,7 +3,6 @@ import { Card, Col, Row, Form, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
 import { CartContext } from "../../context/cartContext"
-import { TransactionContext } from "../../context/transactionContext"
 import { API } from '../../config/api'
 
 import iconTransaction from '../../img/uploadTransaction.png'
@@ -13,7 +12,6 @@ import DashboardNavbar from './DashboardNavbar'
 const Cart = () => {
    const history = useHistory()
    const [state, dispatch] = useContext(CartContext);
-   const [dispatchTransaction] = useContext(TransactionContext);
    const { carts } = state;
 
    const [preview, setPreview] = useState(false)
@@ -89,10 +87,6 @@ const Cart = () => {
             paymentTotal: totalPrice,
             paymentStatus: "Pending",
          })
-
-         dispatchTransaction({
-            type: "TRANSACTION_SUCCESS",
-         });
 
          history.push("/")
          
@@ -207,12 +201,20 @@ const Cart = () => {
                                        <label for="transferProof" className="">
                                           <h5>Upload bukti transfer</h5>
                                           <div className="">
-                                             <img className={preview ? "d-none" : ""} alt="" src={iconTransaction} style={{width: "20vw"}} />
-                                             <img className={preview ? "" : "d-none"} style={{
-                                                   height: "25vh",
-                                                   paddingBottom: "10px",
-                                                   filter: "brightness(75%)"
-                                             }} src={previewImage.file} />
+                                             <img  className={preview ? "d-none" : ""} 
+                                                   src={iconTransaction} 
+                                                   style={{
+                                                      width: "20vw"
+                                                      }}
+                                                   />
+                                             <img  className={preview ? "" : "d-none"}
+                                                   src={previewImage.file}
+                                                   style={{
+                                                      height: "25vh",
+                                                      paddingBottom: "10px",
+                                                      filter: "brightness(75%)"
+                                                      }}
+                                                   />
                                           </div>
                                        </label>
                                        {/* <input onChange={(e) => onChange(e)} name="bookFile" id="bookFile" type="file" style={{display:"none"}} /> */}

@@ -3,7 +3,6 @@ import { Container, Row, Col, Card, Jumbotron, Modal, Button } from 'react-boots
 import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/globalContext"
-import { TransactionContext } from "../../context/transactionContext"
 
 import ListBooks from './ListBooks'
 import DashboardNavbar from './DashboardNavbar'
@@ -17,7 +16,6 @@ import Profile from './Profile';
 const Dashboard = () => {
    const history = useHistory()
    const [state] = useContext(AppContext)
-   const [stateTransaction] = useContext(TransactionContext)
    const [modalLogin, setModalLogin] = useState(false)
    const [modalRegister, setModalRegister] = useState(false)
    const [dashboard, setDashboard] = useState(true)
@@ -29,8 +27,6 @@ const Dashboard = () => {
    const [loginModal, setLoginModal] = useState(false);
    const [registerModal, setRegisterModal] = useState(false);
 
-   console.log(stateTransaction)
-
    const handleClose = () => {
       setLoginModal(false);
       setRegisterModal(false);
@@ -40,7 +36,6 @@ const Dashboard = () => {
    
    const getBook = async (id) => {
       setBook(id);
-      if (state.isAdmin) return history.push('/Admin')
    }
 
    const loginModalDisplay = () => {
