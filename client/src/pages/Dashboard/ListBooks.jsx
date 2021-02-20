@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import loadingIcon from '../../img/loading.png'
-import { Card, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom'
 
@@ -36,19 +36,17 @@ function ListBooks({getbook}) {
    return (
       <div>
       {loading ? (
-         <div className="container row">
-            <div className="col-12">
-               <img src={loadingIcon} />
-            </div>
+         <div className="container text-center p-5 m-5">
+            <Spinner animation="border" role="status"></Spinner>
          </div>
          ) : (
-            <div className="ListBooks">
                <Row>
                   {book.map((bookList) => (
-                     <Link to={"/book/"+bookList.id}>
-                        <Col onClick={() => getbook(bookList.id)}>
-                           <Card className="ListBooks-card bg-transparent border-0">
-                              <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{maxWidth: "10vw", height: "30vh"}} />
+                  <Col sm="4">
+
+                        <Link to={"/book/"+bookList.id}>
+                           <Card onClick={() => getbook(bookList.id)} className=" bg-transparent border-0">
+                              <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{width: "10vw", height: "30vh"}} />
                               <Card.Body className="text-left p-0 pt-2">
                                  <Card.Title className="ListBooks-title" >{bookList.title}</Card.Title>
                                  <Card.Text className="text-muted">
@@ -56,13 +54,12 @@ function ListBooks({getbook}) {
                                  </Card.Text>
                               </Card.Body>
                            </Card>
-                        </Col>
-                     </Link>
+                        </Link>
+
+                  </Col>
                   ))}
                </Row>
-            </div>
-            )};
-         
+            )}       
       </div>
    )
 }
