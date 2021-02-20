@@ -38,8 +38,24 @@ const DashboardHead = () => {
       for ( i = 0; i < listBook.length; i++ ) {
          resultListBook[i] = listBook[i].id
       }
-      console.log("Result Listbook "+resultListBook)
-      console.log("Result Bestbook "+resultBestBook)
+
+      var counts = {}
+      for ( var j = 0; j < resultBestBook.length; j++ ) {
+         var num = resultBestBook[j];
+           counts[num] = counts[num] ? counts[num] + 1 : 1;
+      }
+      var bestSelling = [];
+      for (var best in counts) {
+         bestSelling.push([best, counts[best]]);
+      }
+
+      bestSelling.sort(function(a, b) {
+         return b[1] - a[1];
+      });
+      console.log(resultBestBook)
+      console.log(bestSelling[0][0]) // Best selling pertama
+      console.log(bestSelling[1][0]) // Best selling kedua
+      // Untuk get Id Book, nanti dikurang 1
    }
 
    useEffect(() => {
