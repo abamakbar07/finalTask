@@ -23,10 +23,12 @@ const Cart = () => {
    let i
    let totalPrice = 0
    let bookTitle = []
+   let bookId = []
 
    for (i = 0; i < carts.length; i++) {
       totalPrice += carts[i].price
       bookTitle[i] = carts[i].title
+      bookId[i] = carts[i].id
    }
 
    const purchasedProduct = bookTitle.join(", ")
@@ -72,9 +74,18 @@ const Cart = () => {
 
          setLoading(true);
 
-         console.log(form)
-
          const transaction = await API.post("/transaction", form, config)
+
+         const resultTransaction = transaction.data.data.transaction
+
+         let j;
+         for (j = 0; j < bookId.length; j++ ) {
+            const body = new FormData();
+            body.append("idTransaction", resultTransaction.id)
+            body.append("idBook", bookId[j])
+            const bodyResult = await API.post("/booktransaction", body, config)
+            console.log(bodyResult.data.data)
+         }
 
          setLoading(false)
 

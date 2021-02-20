@@ -1,8 +1,39 @@
-const { BookTransaction, Transactions, Books } = require("../../models");
+const { Userbooktransactions, Transactions, Books } = require("../../models");
+
+exports.addBookTransaction = async (req, res) => {
+  const { body } = req;
+
+  try {
+    const bookTransaction = await Userbooktransactions.create({
+      ...body,
+    });
+
+    const resultBookTransaction = await Userbooktransactions.findOne({
+      where: {
+        id: bookTransaction.id,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+
+    res.send({
+      status: "success",
+      data: {
+        resultBookTransaction,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "Server Error",
+    });
+  }
+};
 
 exports.getBookTransactions = async (req, res) => {
   try {
-    const bookTransactions = await BookTransaction.findAll({
+    const bookTransactions = await Userbooktransactions.findAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
