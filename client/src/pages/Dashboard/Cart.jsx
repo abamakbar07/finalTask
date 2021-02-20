@@ -72,6 +72,12 @@ const Cart = () => {
             },
          };
 
+         const configBookTransaction = {
+         headers: {
+            "Content-Type": "application/json",
+         },
+         };
+
          setLoading(true);
 
          const transaction = await API.post("/transaction", form, config)
@@ -80,10 +86,11 @@ const Cart = () => {
 
          let j;
          for (j = 0; j < bookId.length; j++ ) {
-            const body = new FormData();
-            body.append("idTransaction", resultTransaction.id)
-            body.append("idBook", bookId[j])
-            const bodyResult = await API.post("/booktransaction", body, config)
+            const body = JSON.stringify({
+            idTransaction: resultTransaction.id,
+            idBook: bookId[j]
+            });
+            const bodyResult = await API.post("/booktransaction", body, configBookTransaction)
             console.log(bodyResult.data.data)
          }
 
