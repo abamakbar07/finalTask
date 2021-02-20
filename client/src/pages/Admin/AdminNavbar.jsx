@@ -47,7 +47,7 @@ const AdminNavbar = (props) => {
                            <div className="">
                               <img alt="" className="ml-3 invert" width="25px" src={iconBook} />
                            </div>
-                           <p className="text-left m-0 p-0 text-secondary" onClick="/" >{addBook ? "Transaction" : "Add Book"}</p>
+                           <p className="text-left m-0 p-0 text-secondary">{addBook ? "Transaction" : "Add Book"}</p>
                         </div>
                      </Dropdown.Item>
 
@@ -55,11 +55,11 @@ const AdminNavbar = (props) => {
 
                      <Dropdown.Item className="p-0">
                         <Link to="/" >
-                           <div className="row container text-right">
+                           <div className="row container text-right" onClick={(e) => buttonSignout(e)}>
                               <div className="">
                                  <img alt="" className="ml-3" src={iconLogout} />
                               </div>
-                              <p className="text-left m-0 p-0 text-secondary" onClick={(e) => buttonSignout(e)} >Logout</p>
+                              <p className="text-left m-0 p-0 text-secondary">Logout</p>
                            </div>
                         </Link>
                      </Dropdown.Item>

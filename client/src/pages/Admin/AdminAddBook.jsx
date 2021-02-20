@@ -9,6 +9,10 @@ import { API } from '../../config/api'
 const AdminAddBook = (props) => {
    const [loading, setLoading] = useState(false);
 
+   const [previewImage, setPreviewImage] = useState({
+      file : null,
+   })
+
    const [addBook, setAddBook] = useState({
       title: "",
       publicationDate: "",
@@ -25,6 +29,9 @@ const AdminAddBook = (props) => {
       const updateAddBook = { ...addBook };
       updateAddBook[e.target.name] = e.target.type === "file" ? e.target.files[0] : e.target.value;
       setAddBook(updateAddBook)
+      setPreviewImage({
+         file: URL.createObjectURL(e.target.files[0])
+      })
    };
 
    const { title, publicationDate, pages, author, isbn, price, about, bookThumbnail, bookFile } = addBook
@@ -108,6 +115,7 @@ const AdminAddBook = (props) => {
                            </div>
                         </label>
                         <input onChange={(e) => onChange(e)} name="bookThumbnail" id="bookThumbnail" type="file" style={{display:"none"}} />
+                        <img src={previewImage.file} />
                      </div>
                      <div className="form-group col-md-4 pl-0 pr-0">
                         <label for="bookFile" className="bgTextboxAdd form-control">
@@ -120,7 +128,7 @@ const AdminAddBook = (props) => {
                               </div>
                            </div>
                         </label>
-                        <input onChange={(e) => onChange(e)} name="bookFile" id="bookFile" type="file" style={{display:"none"}} />
+                        <input onChange={(e) => onChange(e)} name="bookFile" id="bookFile" type="file" style={{display:""}} />
                      </div>
                      <div className="row">
                         <div className="col-sm-12 text-right">

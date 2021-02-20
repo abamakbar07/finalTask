@@ -21,6 +21,7 @@ const Transaction = () => {
             },
          };
          await API.patch("/transaction/"+id, body, config )
+
          history.push("/Admin")
          
       } catch (error) {
@@ -39,6 +40,7 @@ const Transaction = () => {
             },
          };
          await API.patch("/transaction/"+id, body, config )
+         
          history.push("/Admin")
          
       } catch (error) {
