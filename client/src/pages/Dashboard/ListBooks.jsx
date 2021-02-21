@@ -34,7 +34,7 @@ function ListBooks({getbook}) {
    }, []);
 
    return (
-      <div>
+      <div className="">
       {loading ? (
          <div className="container text-center p-5 m-5">
             <Spinner animation="border" role="status"></Spinner>
@@ -48,7 +48,9 @@ function ListBooks({getbook}) {
                            <Card onClick={() => getbook(bookList.id)} className=" bg-transparent border-0">
                               <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{width: "10vw", height: "30vh"}} />
                               <Card.Body className="text-left p-0 pt-2">
-                                 <Card.Title className="ListBooks-title" >{bookList.title}</Card.Title>
+                                 <Card.Title className="ListBooks-title" style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
+                                    {bookList.title}
+                                 </Card.Title>
                                  <Card.Text className="text-muted">
                                  {bookList.author}
                                  </Card.Text>

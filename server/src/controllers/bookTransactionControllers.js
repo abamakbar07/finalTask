@@ -98,3 +98,76 @@ exports.getBookTransactions = async (req, res) => {
     });
   }
 };
+
+exports.getBookTransaction = async (req, res) => {
+  const { idTransaction } = req.params;
+
+  try {
+    const bookTransaction = await Userbooktransactions.findAll({
+      where: {
+        idTransaction,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+
+    console.log(bookTransaction)
+
+    // for (i = 0; i < bookTransaction.length; i++) {
+    //   const idTransaction = await Transactions.findOne({
+    //     where: {
+    //       id: bookTransaction[i].idTransaction,
+    //     },
+    //     attributes: {
+    //       exclude: [
+    //         "users",
+    //         "transferProof",
+    //         "productPurchased",
+    //         "paymentTotal",
+    //         "paymentStatus",
+    //         "createdAt",
+    //         "updatedAt"
+    //       ],
+    //     },
+    //   });
+    //   bookTransactions[i].idTransaction = idTransaction;
+    // }
+
+    for (j = 0; j < bookTransaction.length; j++) {
+      const idBook = await Books.findOne({
+        where: {
+          id: bookTransaction[j].idBook,
+        },
+        attributes: {
+          exclude: [
+            "email",
+            "publicationDate",
+            "pages",
+            "author",
+            "isbn",
+            "price",
+            "about",
+            "bookThumbnail",
+            "bookFile",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      });
+      bookTransaction[j].idBook = idBook;
+    }
+
+    res.send({
+      status: "success",
+      data: {
+        bookTransaction: bookTransaction,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: error,
+    });
+  }
+};

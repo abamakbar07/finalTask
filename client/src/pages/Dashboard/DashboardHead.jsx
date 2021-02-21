@@ -50,6 +50,7 @@ const DashboardHead = () => {
          return b[1] - a[1];
       });
       // console.log(listBook)
+      // console.log(bestSelling)
       // console.log(bestSelling[0][0]) // Best selling pertama
       // console.log(bestSelling[1][0]) // Best selling kedua
       // Untuk get Id Book, nanti dikurang 1
@@ -60,7 +61,7 @@ const DashboardHead = () => {
    }, [])
    
    return (
-      <div>
+      <div className="bg-transparent">
       {loading ? (
          <div className="container text-center p-5 m-5">
                <Spinner animation="border" role="status"></Spinner>
@@ -71,13 +72,13 @@ const DashboardHead = () => {
             <Card className="border-0">
                <Row>
                   <Col md="4">
-                     <Card.Img src={"http://localhost:5000/books/"+listBook[0].bookThumbnail} style={{display: "flex", maxWidth: "15vw"}} />
+                     <Card.Img src={"http://localhost:5000/books/"+listBook[bestSelling[0][0] -1].bookThumbnail} style={{display: "flex", maxWidth: "15vw"}} />
                   </Col>
                   <Col md="8">
                      <Card.Body className="text-left">
-                        <Card.Title>{listBook[0].title}</Card.Title>
+                        <Card.Title>{listBook[bestSelling[0][0] -1].title}</Card.Title>
                         <Card.Text style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
-                        {listBook[0].about}
+                           {listBook[bestSelling[0][0] -1].about}
                         </Card.Text>
                         <Button variant="primary">Add to Cart</Button>
                      </Card.Body>
@@ -89,13 +90,13 @@ const DashboardHead = () => {
             <Card className="border-0">
                <Row>
                   <Col md="4">
-                     <Card.Img src={"http://localhost:5000/books/"+listBook[1].bookThumbnail} style={{display: "flex", maxWidth: "15vw"}} />
+                     <Card.Img src={"http://localhost:5000/books/"+listBook[bestSelling[1][0] - 1].bookThumbnail} style={{display: "flex", maxWidth: "15vw"}} />
                   </Col>
                   <Col md="8">
                      <Card.Body className="text-left">
-                        <Card.Title>{listBook[1].title}</Card.Title>
+                        <Card.Title>{listBook[bestSelling[1][0] - 1].title}</Card.Title>
                         <Card.Text style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
-                        {listBook[1].about}
+                        {listBook[bestSelling[1][0] - 1].about}
                         </Card.Text>
                         <Button variant="primary">Add to Cart</Button>
                      </Card.Body>

@@ -6,10 +6,11 @@ import book4 from '../../img/buku4.png'
 import { API } from '../../config/api';
 
 const ProfileListbooks = () => {
-   const [loading, setLoading] = useState(true)
    const [paymentStatus, setPaymentStatus] = useState()
    const [listBook, setListBook] = useState([])
    const [listTransaction, setlistTransaction] = useState([])
+   const [listBookTransaction, setListBookTransaction] = useState([])
+   const [loading, setLoading] = useState(true)
 
    const getData = async () => {
       try {
@@ -17,23 +18,27 @@ const ProfileListbooks = () => {
 
          const resultBook = await API.get("/books")
          setListBook(resultBook.data.data.books)
-         
-         const resultTransaction = await API.get("/transaction/"+localStorage.id)
-         setlistTransaction(resultTransaction.data.data.transaction)
 
-         setLoading(false)         
+         const resultTransaction = await API.get("/transaction/"+localStorage.id)
+         await setlistTransaction(resultTransaction.data.data.transaction)
+
+         const resultBookTransaction = await API.get("/booktransaction/"+listTransaction.id)
+         setListBookTransaction(resultBookTransaction.data.data.bookTransaction)
+
+         setLoading(false)
       } catch (error) {
          console.log("Error getData ProfileListBook")
       }
    }
-   // if (!loading) listTransaction.paymentStatus === "Pending" ? console.log("Pending") : console.log("tidak pending")
+
+   if (!loading) console.log(listBookTransaction.length > 0 ? "Ada" : "gada")
 
    useEffect(() => {
       getData()
    }, [])
 
    return (
-      <div className="ProfileListbooks">
+      <div className="ProfileListbooks pb-5">
          {/* <div className="container text-center">
             Maaf
          </div> */}
@@ -47,7 +52,7 @@ const ProfileListbooks = () => {
                               <Card.Img variant="top" src={book4} style={{width: "10vw", height: "30vh"}} />
                               <Card.Body className="text-left p-0 pt-2">
                                  <Card.Title className="ListBooks-title" >
-                                    Belum ada judul
+                                    {loading ? "aw loading" : "galoading"}
                                  </Card.Title>
                                  <Card.Text className="text-muted">
                                     Iwan Fals

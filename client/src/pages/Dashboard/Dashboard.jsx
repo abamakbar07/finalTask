@@ -77,9 +77,9 @@ const Dashboard = () => {
          
          <div className={dashboard ? "Dashboard pt-3 pb-3" : "Dashboard pt-3 pb-3 d-none"}>
          
-            <Container fluid>
+            <Container fluid className="p-0 m-0">
 
-            <Jumbotron style={{display: mainContent ? "block" : "none" }} fluid className="bg-white">
+            <Jumbotron style={{display: mainContent ? "block" : "none" }} className="bg-transparent pd-0">
                <div className="col-md-4 offset-md-4">
                   <h3>With us, you can shop online & help save your high street at the same time</h3>
                </div>
@@ -90,9 +90,8 @@ const Dashboard = () => {
             </div>
 
             <Row style={{display: mainContent ? "block" : "none" }} className="Dashboard-row">
-               <Col className="Dashboard-comp Dashboard-comp-card">
-                  <Card className="Dashboard-comp-content bg-transparent border-0" body>
-                     <div className="MainContent">
+               <Col className="Dashboard-comp-card">
+                  <div className="border-0" body style={{background: "whitesmoke"}}>
                         <div className="container">
                            <div className="row">
                               <div className="col-md-12">
@@ -103,8 +102,7 @@ const Dashboard = () => {
                               </div>
                            </div>
                         </div>
-                     </div>
-                  </Card>
+                  </div>
                </Col>
             </Row>
 
@@ -117,7 +115,7 @@ const Dashboard = () => {
                <Signup statusSignup={registerModalDisplay} valSi={loginDisplay} rtn={dimDisplay} />
             </div>
 
-            <div style={{display: detailBookContent ? "block" : "none" }}>
+            <div className="" style={{display: detailBookContent ? "block" : "none" }}>
                <BookDetail dsply={detailBookContent} propsBook={book} />
             </div>
          </Container>

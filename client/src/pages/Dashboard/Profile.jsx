@@ -5,8 +5,8 @@ import ProfileListbooks from './ProfileListbooks'
 const Profile = () => {
    return (
       <div className="Profile">
-         <div className="container pt-5">
-            <div className="row pt-5 mt-5">
+         <div className="container">
+            <div className="row mt-5">
                <div className="col-12">
                   <img className="MainContent-header" src="" alt="" />
                   <h4 className="MainContent-subTitle text-left mb-3 font-weight-bold">Profile</h4>
