@@ -3,16 +3,12 @@ const { Transactions, Users } = require("../../models");
 exports.addTransaction = async (req, res) => {
   const { body, files } = req;
 
-  console.log(body)
-
   try {
     const transaction = await Transactions.create({
       ...body,
       transferProof: files.transferProof[0].filename,
       paymentStatus: "Pending",
     });
-
-    console.log(transaction)
 
     const users = await Users.findOne({
       where: {
@@ -109,20 +105,24 @@ exports.editTransaction = async (req, res) => {
 
 exports.getTransaction = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idUser } = req.params;
+
+    console.log(idUser)
 
     const transaction = await Transactions.findOne({
       where: {
-        id,
+        users: idUser
       },
       attributes: {
         exclude: ["createdAt", "updatedAt", "userId", "UserId"],
       },
     });
 
+    console.log(transaction)
+
     if (!transaction) {
       return res.status(400).send({
-        message: `Transaction with id ${id} Not Existed`,
+        message: `Transaction with userId ${idUser} Not Existed`,
       });
     }
 
