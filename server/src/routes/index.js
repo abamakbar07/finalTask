@@ -23,7 +23,7 @@ router.get("/book/:id", getBookDetail)
 router.post("/book", uploadBookNew("bookThumbnail", "bookFile"), addBook)
 
 router.get("/transactions", getTransactions)
-router.get("/transaction/:userId", getTransaction)
+router.get("/transaction/:idUser", getTransaction)
 router.patch("/transaction/:id", editTransaction);
 router.post("/transaction", uploadTransactionProof("transferProof"), addTransaction)
 
