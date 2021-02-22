@@ -85,6 +85,8 @@ const Dashboard = () => {
       getBook();
       getTransactionUser();
    }, []);
+
+   if (state.isAdmin) history.push("/Admin")
    
    return (
       <div>

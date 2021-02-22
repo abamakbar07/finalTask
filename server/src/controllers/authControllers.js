@@ -125,7 +125,7 @@ exports.login = async (req, res) => {
           id: user.id,
           fullname: user.fullname,
           email,
-         //  isAdmin: user.isAdmin,
+          isAdmin: user.isAdmin,
          //  gender: user.gender,
          //  phone: user.phone,
          //  address: user.address,
