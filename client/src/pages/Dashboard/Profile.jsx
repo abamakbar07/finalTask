@@ -2,7 +2,8 @@ import React from 'react'
 import ProfileDetail from './ProfileDetail'
 import ProfileListbooks from './ProfileListbooks'
 
-const Profile = () => {
+const Profile = (props) => {
+
    return (
       <div className="Profile">
          <div className="container">
@@ -15,7 +16,7 @@ const Profile = () => {
                   </div>
                   <h4 className="MainContent-subTitle text-left font-weight-bold" style={{marginTop: '68px'}}>My List Book</h4>
                   {/* <div className="row"> */}
-                     <ProfileListbooks />
+                     <ProfileListbooks listTransaction={props.listTransaction} />
                   {/* </div> */}
                </div>
             </div>

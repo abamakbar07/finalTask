@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Jumbotron, Modal, Button } from 'react-boots
 import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/globalContext"
+import { API } from '../../config/api';
 
 import ListBooks from './ListBooks'
 import DashboardNavbar from './DashboardNavbar'
@@ -27,9 +28,22 @@ const Dashboard = () => {
    const [loginModal, setLoginModal] = useState(false);
    const [registerModal, setRegisterModal] = useState(false);
 
+   const [listTransaction, setListTransaction] = useState([])
+
+   const getTransactionUser = async () => {
+
+      try {
+         const resultTransaction = await API.get("/transaction/"+localStorage.id)
+         setListTransaction(resultTransaction.data.data.transaction)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
    const handleClose = () => {
       setLoginModal(false);
       setRegisterModal(false);
+      getTransactionUser();
    }
    
    const handleShow = () => setLoginModal(true);
@@ -69,6 +83,7 @@ const Dashboard = () => {
 
    useEffect(() => {
       getBook();
+      getTransactionUser();
    }, []);
    
    return (
@@ -123,7 +138,7 @@ const Dashboard = () => {
          </div>
 
          <div className={profile ? "d-block" : "d-none"}>
-            {profile ? <Profile /> : ""}
+            {profile ? <Profile listTransaction={listTransaction} /> : ""}
          </div>
 
          <Modal show={loginModal} onHide={handleClose}>

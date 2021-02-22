@@ -112,27 +112,24 @@ exports.getBookTransaction = async (req, res) => {
       },
     });
 
-    console.log(bookTransaction)
-
-    // for (i = 0; i < bookTransaction.length; i++) {
-    //   const idTransaction = await Transactions.findOne({
-    //     where: {
-    //       id: bookTransaction[i].idTransaction,
-    //     },
-    //     attributes: {
-    //       exclude: [
-    //         "users",
-    //         "transferProof",
-    //         "productPurchased",
-    //         "paymentTotal",
-    //         "paymentStatus",
-    //         "createdAt",
-    //         "updatedAt"
-    //       ],
-    //     },
-    //   });
-    //   bookTransactions[i].idTransaction = idTransaction;
-    // }
+    for (i = 0; i < bookTransaction.length; i++) {
+      const idTransactions = await Transactions.findOne({
+        where: {
+          id: bookTransaction[i].idTransaction,
+        },
+        attributes: {
+          exclude: [
+            "users",
+            "transferProof",
+            "productPurchased",
+            "paymentTotal",
+            "createdAt",
+            "updatedAt"
+          ],
+        },
+      });
+      bookTransaction[i].idTransaction = idTransactions;
+    }
 
     for (j = 0; j < bookTransaction.length; j++) {
       const idBook = await Books.findOne({
@@ -144,12 +141,9 @@ exports.getBookTransaction = async (req, res) => {
             "email",
             "publicationDate",
             "pages",
-            "author",
             "isbn",
             "price",
             "about",
-            "bookThumbnail",
-            "bookFile",
             "createdAt",
             "updatedAt",
           ],
