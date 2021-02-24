@@ -41,9 +41,12 @@ const ProfileListbooks = (props) => {
       <div className="ProfileListbooks pb-5">
          {loading ? (
             <div className="container text-center">
-               Maaf
+               Anda belum memilih buku
             </div>
-            ) : (
+            ) : listBookTransaction.length < 1 ?  ( 
+            <div className="container text-center">
+               Anda belum memilih buku
+            </div> ) : (
                <Row>
                   {listBookTransaction.map((bookTransaction) => (
                   <Col sm="4">

@@ -45,7 +45,7 @@ function ListBooks({getbook}) {
                   <Col sm="4">
 
                         <Link to={"/book/"+bookList.id}>
-                           <Card onClick={() => getbook(bookList.id)} className=" bg-transparent border-0">
+                           <Card onClick={() => getbook(bookList.id)} className=" bg-transparent border-0 pb-5">
                               <Card.Img variant="top" src={"http://localhost:5000/books/"+bookList.bookThumbnail} style={{width: "10vw", height: "30vh"}} />
                               <Card.Body className="text-left p-0 pt-2">
                                  <Card.Title className="ListBooks-title" style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>

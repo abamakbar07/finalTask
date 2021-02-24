@@ -67,7 +67,9 @@ const DashboardHead = () => {
                <Spinner animation="border" role="status"></Spinner>
          </div>
          ) : (
-      <Row>
+      <Row style={{
+         width: "100%"
+      }}>
          <Col sm="6">
             <Card className="border-0">
                <Row>
@@ -80,7 +82,7 @@ const DashboardHead = () => {
                         <Card.Text style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
                            {listBook[bestSelling[0][0] -1].about}
                         </Card.Text>
-                        <Button variant="primary">Add to Cart</Button>
+                        {/* <Button variant="primary">Add to Cart</Button> */}
                      </Card.Body>
                   </Col>
                </Row>
@@ -98,7 +100,7 @@ const DashboardHead = () => {
                         <Card.Text style={{whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
                         {listBook[bestSelling[1][0] - 1].about}
                         </Card.Text>
-                        <Button variant="primary">Add to Cart</Button>
+                        {/* <Button variant="primary">Add to Cart</Button> */}
                      </Card.Body>
                   </Col>
                </Row>

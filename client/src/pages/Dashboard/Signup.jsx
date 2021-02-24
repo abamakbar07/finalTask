@@ -75,9 +75,12 @@ const Signup = (props) => {
 
               <Form.Control className="bgTextbox mt-3 mb-3" name="fullname" type="fullname" placeholder="Full Name" onChange={(e) => onChange(e)} />
 
-              <div className="btn" onClick={props.statusSignup}>
-                <Button className="mt-2 submit-button" variant="danger" type="submit" onClick={props.rtn}>
-                  Sign Up
+              <div className="" onClick={props.statusSignup}>
+                <Button className="mt-2 submit-button text-white" variant="" type="submit" onClick={props.rtn} style={{
+                  width: "100%",
+                  background: "#393939"
+                }}>
+                  Register
                 </Button>
               </div>
             </Form.Group>
